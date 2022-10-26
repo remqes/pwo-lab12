@@ -7,11 +7,21 @@ import java.io.IOException;
 public class SequenceTools {
     
     private static String getTerms(SequenceGenerator sg, int from, int to, String sep) {
-        int i = from, stop = to, step = from > to ? -1 : 1;
+        
+        boolean isBackwards = false;
+        if(from > to) {
+            int temp = from;
+            from = to;
+            to = temp;
+            isBackwards = true;
+        }
+        
+        int i = from, stop = to, step = 1;
         String terms = "";
         
         while(true) {
-            terms += sg.getTerm(i) + sep;
+            if (isBackwards) terms += sg.getTerm(i) + sep + terms;
+            else terms += sg.getTerm(i) + sep;
             if (i == stop) return terms.trim();
             i += step;
         }
